@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA en primarIA · Sesión 1 · CEIP San Fernando</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ai-dark:#0d2244;--ai-mid:#1a3a6e;--ai-blue:#2563c0;--ai-orange:#d97706;--ai-orange-l:#f59e0b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif}
+.wrap{min-height:100vh;background:var(--ai-dark);color:#fff;font-family:'Nunito',sans-serif}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+.home-head{text-align:center;padding:28px 20px 14px;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,transparent 100%)}
+.home-title{font-family:'Baloo 2',cursive;font-size:2.4rem;font-weight:800;color:#f59e0b;line-height:1.1}
+.home-sub{font-family:'Baloo 2',cursive;font-size:1.1rem;color:#e2e8f0;margin-top:5px;opacity:.9}
+.badge{display:inline-block;background:#f59e0b;color:#0d2244;font-family:'Baloo 2',cursive;font-weight:700;font-size:.75rem;padding:4px 14px;border-radius:20px;margin-top:8px;letter-spacing:1px}
+.nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px 22px 22px;max-width:860px;margin:0 auto;width:100%;flex:1;align-content:center}
+.nc{background:linear-gradient(135deg,#1a3a6e 0%,#2563c0 100%);border:2px solid rgba(245,158,11,.3);border-radius:14px;padding:20px 12px;cursor:pointer;transition:all .2s;text-align:center;color:#e2e8f0}
+.nc:hover{transform:translateY(-3px);border-color:#f59e0b;box-shadow:0 8px 22px rgba(0,0,0,.4)}
+.nc .ni{font-size:2.1rem;display:block;margin-bottom:6px}
+.nc .nn{font-family:'Baloo 2',cursive;font-size:.65rem;color:#f59e0b;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.nc .nt{font-family:'Baloo 2',cursive;font-size:.92rem;font-weight:700;margin-top:3px;line-height:1.2;color:#fff}
+.nc.highlight{border-color:#f59e0b;background:linear-gradient(135deg,#92400e 0%,#b45309 100%)}
+.sec-head{background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,transparent 100%);padding:16px 18px 10px;display:flex;align-items:center;gap:10px}
+.back-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#e2e8f0;padding:7px 13px;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;transition:all .2s;white-space:nowrap}
+.back-btn:hover{background:rgba(255,255,255,.24)}
+.home-icon-btn{background:#f59e0b;border:none;color:#0d2244;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:1.1rem;font-weight:700;transition:all .2s;display:flex;align-items:center;justify-content:center;line-height:1}
+.home-icon-btn:hover{background:#fbbf24;transform:translateY(-1px)}
+.sec-ttl{flex:1}
+.sec-ttl h2{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:#f59e0b}
+.breadcrumb{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:2px}
+.sc{flex:1;padding:6px 20px 20px;max-width:960px;margin:0 auto;width:100%}
+.tip-docente{background:#1e3a5f;border-left:3px solid #f59e0b;border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:14px;color:#fde68a;font-size:.82rem;font-style:italic;line-height:1.55}
+.tip-docente::before{content:'💡 Nota docente — '}
+.aviso-mano{background:#7c2d12;border:2px solid #ea580c;border-radius:10px;padding:10px 16px;margin-bottom:14px;color:#fed7aa;font-size:.85rem;font-weight:700;text-align:center}
+.aviso-mano::before{content:'✋ '}
+.fase-card{background:#f8f7f2;border-radius:13px;padding:16px 18px;margin-bottom:12px;box-shadow:0 3px 12px rgba(0,0,0,.28)}
+.fase-title{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;color:#0d2244;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fase-tiempo{display:inline-block;background:#1a3a6e;color:#f59e0b;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:10px}
+.fase-desc{font-size:.88rem;color:#444;line-height:1.6;margin-bottom:10px}
+.pregunta-grande{text-align:center;padding:28px 20px;font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:#0d2244;line-height:1.35}
+.por-que-card{background:linear-gradient(135deg,#1a3a6e 0%,#0d2244 100%);border:2px solid #f59e0b;border-radius:14px;padding:20px 22px;margin-bottom:14px}
+.por-que-titulo{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:#f59e0b;margin-bottom:10px}
+.por-que-texto{font-size:.92rem;color:#e2e8f0;line-height:1.7}
+.btn{display:inline-block;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-family:'Baloo 2',cursive;font-weight:700;font-size:.88rem;transition:all .2s}
+.btn-blue{background:#2563c0;color:#fff}.btn-blue:hover{background:#3b82d4;transform:translateY(-1px)}
+.btn-gold{background:#d97706;color:#fff}.btn-gold:hover{background:#f59e0b;transform:translateY(-1px)}
+.btn-sm{padding:6px 13px;font-size:.8rem}
+.rv{display:none;margin-top:10px;padding:11px 14px;border-radius:9px;animation:fadeIn .3s ease;font-size:.87rem;line-height:1.6}
+.rv-gold{background:#fff8e8;border-left:4px solid #d97706;color:#3a2000}
+.rv-blue{background:#eff6ff;border-left:4px solid #2563c0;color:#0d2244}
+.rv-green{background:#f0fdf4;border-left:4px solid #16a34a;color:#14532d}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.casos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.caso-card{background:#f8f7f2;border-radius:12px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.caso-icon{font-size:1.8rem;display:block;margin-bottom:5px}
+.caso-q{font-size:.9rem;font-weight:700;color:#0d2244;margin-bottom:8px;line-height:1.35}
+.votos{display:flex;gap:8px;margin-bottom:7px;flex-wrap:wrap}
+.voto-btn{flex:1;min-width:70px;padding:6px 10px;border-radius:8px;border:2px solid #ddd;background:#fff;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .18s;color:#333;text-align:center}
+.voto-btn:hover{border-color:#2563c0;background:#eff6ff;color:#1a3a6e}
+.voto-btn.sel-si{border-color:#16a34a;background:#dcfce7;color:#14532d}
+.voto-btn.sel-no{border-color:#dc2626;background:#fee2e2;color:#7f1d1d}
+.voto-btn.sel-dep{border-color:#d97706;background:#fff8e8;color:#78350f}
+.pista{display:none;margin-top:7px;padding:9px 12px;border-radius:8px;background:#f0f9ff;border-left:3px solid #2563c0;font-size:.8rem;color:#0d2244;line-height:1.5;animation:fadeIn .3s ease}
+.concepciones{display:flex;flex-direction:column;gap:8px}
+.conc-item{background:#f8f7f2;border-radius:10px;padding:12px 15px}
+.conc-q{font-size:.95rem;font-weight:700;color:#0d2244;line-height:1.45;margin-bottom:7px}
+.checklist{background:#0d2244;border-radius:13px;padding:16px 18px;margin-bottom:12px}
+.checklist-title{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;color:#f59e0b;margin-bottom:10px}
+.checklist-item{color:#cbd5e1;font-size:.9rem;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="home-head">
+    <div class="home-title">🤖 IA en primarIA</div>
+    <div class="home-sub">5.º de Primaria · Trimestre 1 · CEIP San Fernando</div>
+    <span class="badge">📍 Sesión 1 — ¿Qué sabemos ya de la IA?</span>
+  </div>
+  <div class="nav-grid">
+    <div class="nc highlight" onclick="goTo('s-antes')">
+      <span class="ni">📋</span>
+      <div class="nn">Antes de empezar</div>
+      <div class="nt">Nota para el docente</div>
+    </div>
+    <div class="nc" onclick="goTo('s-apertura')">
+      <span class="ni">🎬</span>
+      <div class="nn">Fase 1 · 5'</div>
+      <div class="nt">Apertura</div>
+    </div>
+    <div class="nc" onclick="goTo('s-lluvia')">
+      <span class="ni">✏️</span>
+      <div class="nn">Fase 2 · 10'</div>
+      <div class="nt">Lluvia de ideas</div>
+    </div>
+    <div class="nc" onclick="goTo('s-mapa')">
+      <span class="ni">🗺️</span>
+      <div class="nn">Fase 3 · 12'</div>
+      <div class="nt">Mapa colectivo</div>
+    </div>
+    <div class="nc" onclick="goTo('s-casos')">
+      <span class="ni">🤔</span>
+      <div class="nn">Fase 4 · 13'</div>
+      <div class="nt">¿Esto es IA?</div>
+    </div>
+    <div class="nc" onclick="goTo('s-cierre')">
+      <span class="ni">🔒</span>
+      <div class="nn">Fase 5 · 6'</div>
+      <div class="nt">Cierre</div>
+    </div>
+  </div>
+</div>
+
+<!-- ANTES DE EMPEZAR -->
+<div class="screen" id="s-antes">
+  <div class="sec-head">
+    <button class="back-btn" onclick="goTo('s-home')">← Volver</button>
+    <div class="sec-ttl"><h2>📋 Antes de empezar</h2><div class="breadcrumb">S1 · Nota para el docente</div></div>
+    <button class="home-icon-btn" onclick="goTo('s-home')">🏠</button>
+  </div>
+  <div class="sc">
+    <div class="tip-docente">Esta sesión es para escuchar y registrar, no para enseñar. Las ideas incorrectas del alumnado no se corrigen hoy: se recogen. Son el material de trabajo de todo el proyecto.</div>
+    <div class="fase-card">
+      <div class="fase-title">🎯 Objetivo de la sesión</div>
+      <div class="fase-desc">Saber qué cree el alumnado que es la IA antes de que el proyecto comience. Ese mapa inicial se guardará y se recuperará en la Sesión 28 para que cada uno compare cómo ha cambiado su forma de pensar.</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">📦 Material necesario</div>
+      <div class="fase-desc">✔ Una ficha impresa por alumno/a (folio A4 con las tres preguntas)<br>✔ Pizarra o papel continuo para el mapa colectivo<br>✔ Rotuladores de dos colores: uno para ideas, otro para desacuerdos<br>✔ Carpeta o acceso a Classroom para guardar las fichas al final</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">⚠️ El error más frecuente</div>
+      <div class="fase-desc">Corregir cuando el alumnado dice "la IA piensa como una persona" o "la IA sabe todo". No se corrige hoy. Se anota y se deja. El proyecto se encarga de desmontarlo poco a poco.</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">♿ Adaptación DUA</div>
+      <div class="fase-desc">Quien tenga dificultad con la escritura puede completar la ficha con dibujos, palabras sueltas o dictándosela a un compañero. Se admite cualquier formato.</div>
+    </div>
+  </div>
+</div>
+
+<!-- APERTURA -->
+<div class="screen" id="s-apertura">
+  <div class="sec-head">
+    <button class="back-btn" onclick="goTo('s-home')">← Volver</button>
+    <div class="sec-ttl"><h2>🎬 Fase 1 — Apertura</h2><div class="breadcrumb">S1 · Fase 1 · 5 minutos</div></div>
+    <button class="home-icon-btn" onclick="goTo('s-home')">🏠</button>
+  </div>
+  <div class="sc">
+    <div class="tip-docente">Una sola pregunta grande, bien lanzada. Espera en silencio antes de que alguien hable.</div>
+    <div class="fase-card">
+      <div class="pregunta-grande">🧠<br>¿Dónde os habéis encontrado hoy<br>con la inteligencia artificial?</div>
+      <div style="font-size:.85rem;color:#777;text-align:center;font-style:italic;margin-top:-4px">Proyecta esta pregunta. Deja que piensen antes de que alguien responda.</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">💬 Si la clase arranca fría <span class="fase-tiempo">banco de ejemplos</span></div>
+      <div class="fase-desc">Lanza uno o dos ejemplos para abrir la conversación. No los des todos.</div>
+      <button class="btn btn-blue btn-sm" onclick="rv(this)">Ver ejemplos →</button>
+      <div class="rv rv-blue">📱 El móvil que reconoce tu cara para desbloquearse<br>🎵 Spotify o YouTube que "sabe" qué canción te va a gustar<br>📸 Los filtros de la cámara que detectan tu cara<br>🎮 Los personajes del videojuego que reaccionan a lo que haces<br>🔍 El corrector que te sugiere palabras cuando escribes<br>🛒 El super online que te recomienda productos</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">🔁 Cierre de la fase</div>
+      <button class="btn btn-gold btn-sm" onclick="rv(this)">Ver qué decir →</button>
+      <div class="rv rv-gold">"Habéis dicho cosas muy interesantes. Ahora quiero saber qué piensa cada uno por su cuenta. Coged la ficha y escribid lo primero que os venga a la cabeza, sin miedo a equivocaros. Hoy no hay respuestas malas."</div>
+    </div>
+  </div>
+</div>
+
+<!-- LLUVIA DE IDEAS -->
+<div class="screen" id="s-lluvia">
+  <div class="sec-head">
+    <button class="back-btn" onclick="goTo('s-home')">← Volver</button>
+    <div class="sec-ttl"><h2>✏️ Fase 2 — Lluvia de ideas</h2><div class="breadcrumb">S1 · Fase 2 · 10 minutos</div></div>
+    <button class="home-icon-btn" onclick="goTo('s-home')">🏠</button>
+  </div>
+  <div class="sc">
+    <div class="tip-docente">Técnica: pienso (3') → comparto en pareja o trío (4') → ponemos en común (3'). Quien no hablaría en frío, habla después de contárselo a alguien.</div>
+    <div class="fase-card">
+      <div class="fase-title">✏️ Rellena tu ficha <span class="fase-tiempo">3 min — individual</span></div>
+      <div class="fase-desc">En silencio y sin mirar la del compañero. Escribe lo primero que pienses. No hay respuestas correctas ni incorrectas.</div>
+      <button class="btn btn-gold btn-sm" onclick="rv(this)">Ver consigna para el aula →</button>
+      <div class="rv rv-gold">"Rellenad las tres preguntas de la ficha en silencio. Lo que escribáis hoy lo guardaremos. Al final del curso lo leeremos de nuevo para ver cuánto habéis cambiado."</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">👥 Comparte con tu pareja o grupo <span class="fase-tiempo">4 min</span></div>
+      <div class="fase-desc">Por parejas o grupos de tres. Cada uno cuenta lo que ha escrito. Podéis añadir ideas en el margen de vuestra ficha si el otro dice algo que no habíais pensado.</div>
+      <button class="btn btn-blue btn-sm" onclick="rv(this)">Preguntas para animar el intercambio →</button>
+      <div class="rv rv-blue">🔹 "¿Estáis de acuerdo con lo que escribió el otro? ¿Por qué sí o por qué no?"<br>🔹 "¿Hay algo que haya escrito tu compañero que tú no habrías pensado?"<br>🔹 "¿Dónde habéis visto la IA los dos? ¿Coincidís en algo?"</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">🗣️ Ponemos en común <span class="fase-tiempo">3 min</span></div>
+      <div class="fase-desc">Una idea por pareja o grupo. Rápido. El docente lo anota en la pizarra sin evaluar. En la siguiente fase lo organizamos entre todos.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAPA COLECTIVO -->
+<div class="screen" id="s-mapa">
+  <div class="sec-head">
+    <button class="back-btn" onclick="goTo('s-home')">← Volver</button>
+    <div class="sec-ttl"><h2>🗺️ Fase 3 — Mapa colectivo</h2><div class="breadcrumb">S1 · Fase 3 · 12 minutos</div></div>
+    <button class="home-icon-btn" onclick="goTo('s-home')">🏠</button>
+  </div>
+  <div class="sc">
+    <div class="tip-docente">Actúa como secretario: escribe lo que dice la clase, agrupa ideas similares y marca con el segundo color los desacuerdos. No corrijas nada todavía.</div>
+    <div class="fase-card">
+      <div class="fase-title">📝 Construimos el mapa juntos</div>
+      <div class="fase-desc">En el centro de la pizarra está escrito: <strong>"LA IA ES…"</strong><br><br>Vamos a ir añadiendo vuestras ideas alrededor. Si dos ideas se parecen, las juntamos. Si no estáis de acuerdo con algo, lo marcamos con otro color. Esos desacuerdos son los más interesantes: volveremos a ellos a lo largo del proyecto.</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">🔍 Ideas para debatir</div>
+      <div class="fase-desc">Si aparecen estas ideas en el mapa, el docente las anota y lanza la pregunta al grupo.</div>
+      <div class="concepciones">
+        <div class="conc-item">
+          <div class="conc-q">"La IA piensa como una persona"</div>
+          <button class="btn btn-blue btn-sm" onclick="rv(this)">Pregunta para el grupo →</button>
+          <div class="rv rv-green">¿Todos pensáis lo mismo? ¿Alguien no está de acuerdo? ¿En qué se parecería y en qué sería diferente pensar como una persona?</div>
+        </div>
+        <div class="conc-item">
+          <div class="conc-q">"La IA sabe todo"</div>
+          <button class="btn btn-blue btn-sm" onclick="rv(this)">Pregunta para el grupo →</button>
+          <div class="rv rv-green">¿Podéis pensar en alguna cosa que la IA no sepa o en la que se equivoque? ¿Os ha pasado alguna vez que le preguntasteis algo y respondió mal?</div>
+        </div>
+        <div class="conc-item">
+          <div class="conc-q">"La IA es un robot"</div>
+          <button class="btn btn-blue btn-sm" onclick="rv(this)">Pregunta para el grupo →</button>
+          <div class="rv rv-green">¿Puede haber inteligencia artificial sin un cuerpo físico? ¿Vuestro móvil tiene cuerpo de robot? ¿Y el corrector que os sugiere palabras?</div>
+        </div>
+        <div class="conc-item">
+          <div class="conc-q">"La IA es el futuro, ahora no existe todavía"</div>
+          <button class="btn btn-blue btn-sm" onclick="rv(this)">Pregunta para el grupo →</button>
+          <div class="rv rv-green">¿Recordáis los ejemplos del principio? ¿El filtro de vuestra cámara existe hoy o es del futuro? ¿Y las recomendaciones de YouTube?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CASOS -->
+<div class="screen" id="s-casos">
+  <div class="sec-head">
+    <button class="back-btn" onclick="goTo('s-home')">← Volver</button>
+    <div class="sec-ttl"><h2>🤔 Fase 4 — ¿Esto es IA?</h2><div class="breadcrumb">S1 · Fase 4 · 13 minutos</div></div>
+    <button class="home-icon-btn" onclick="goTo('s-home')">🏠</button>
+  </div>
+  <div class="sc">
+    <div class="tip-docente">Votación a mano alzada, caso por caso. No se resuelve nada hoy: el objetivo es que afloren las discrepancias.</div>
+    <div class="aviso-mano">Solo puede hablar quien levante la mano y reciba permiso</div>
+    <div class="por-que-card">
+      <div class="por-que-titulo">🔎 ¿Por qué no vamos a saber las respuestas hoy?</div>
+      <div class="por-que-texto">
+        Hoy no vamos a descubrir si cada cosa es o no es IA. Y eso es exactamente el plan.<br><br>
+        Estas preguntas no tienen respuesta fácil: para contestarlas bien necesitáis entender cómo funciona la IA por dentro. Y eso es justo lo que vamos a aprender durante este proyecto, sesión a sesión.<br><br>
+        Si alguien os diera las respuestas ahora, os estaría quitando lo más interesante: llegar vosotros mismos a entenderlo.<br><br>
+        <strong>Guardad vuestra opinión de hoy.</strong> Al final del proyecto, volved a estas preguntas y comprobad si habéis cambiado de idea. Eso será la prueba de todo lo que habréis aprendido.
+      </div>
+    </div>
+    <div class="casos-grid">
+      <div class="caso-card">
+        <span class="caso-icon">📱</span>
+        <div class="caso-q">El asistente de voz del móvil que entiende lo que le dices y te responde, ¿es IA?</div>
+        <div class="votos"><button class="voto-btn" onclick="voto(this,'si')">✅ Sí</button><button class="voto-btn" onclick="voto(this,'no')">❌ No</button><button class="voto-btn" onclick="voto(this,'dep')">🤔 Depende</button></div>
+        <button class="btn btn-blue btn-sm" onclick="pista(this)">Ver pista →</button>
+        <div class="pista">Para saberlo necesitáis entender si "entiende de verdad" o solo sigue reglas fijas. Eso lo descubriréis en la Sesión 3.</div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-icon">🔢</span>
+        <div class="caso-q">Una calculadora que suma y resta exactamente igual siempre, ¿es IA?</div>
+        <div class="votos"><button class="voto-btn" onclick="voto(this,'si')">✅ Sí</button><button class="voto-btn" onclick="voto(this,'no')">❌ No</button><button class="voto-btn" onclick="voto(this,'dep')">🤔 Depende</button></div>
+        <button class="btn btn-blue btn-sm" onclick="pista(this)">Ver pista →</button>
+        <div class="pista">La clave está en si el programa aprende o siempre hace exactamente lo mismo. Esto lo trabajaréis en la Sesión 2.</div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-icon">📺</span>
+        <div class="caso-q">Netflix o YouTube que te recomienda vídeos según lo que has visto antes, ¿es IA?</div>
+        <div class="votos"><button class="voto-btn" onclick="voto(this,'si')">✅ Sí</button><button class="voto-btn" onclick="voto(this,'no')">❌ No</button><button class="voto-btn" onclick="voto(this,'dep')">🤔 Depende</button></div>
+        <button class="btn btn-blue btn-sm" onclick="pista(this)">Ver pista →</button>
+        <div class="pista">Este sistema aprende de vuestros hábitos. ¿Eso es aprender como aprende una persona? Esta pregunta vuelve en la Sesión 11.</div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-icon">🚦</span>
+        <div class="caso-q">Un semáforo que cambia de color cada cierto tiempo fijo, ¿es IA?</div>
+        <div class="votos"><button class="voto-btn" onclick="voto(this,'si')">✅ Sí</button><button class="voto-btn" onclick="voto(this,'no')">❌ No</button><button class="voto-btn" onclick="voto(this,'dep')">🤔 Depende</button></div>
+        <button class="btn btn-blue btn-sm" onclick="pista(this)">Ver pista →</button>
+        <div class="pista">¿Y si el semáforo contara coches y cambiara según el tráfico real? ¿Cambiaría vuestra respuesta?</div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-icon">🤖</span>
+        <div class="caso-q">Un robot de cocina que sigue una receta programada, siempre igual, ¿es IA?</div>
+        <div class="votos"><button class="voto-btn" onclick="voto(this,'si')">✅ Sí</button><button class="voto-btn" onclick="voto(this,'no')">❌ No</button><button class="voto-btn" onclick="voto(this,'dep')">🤔 Depende</button></div>
+        <button class="btn btn-blue btn-sm" onclick="pista(this)">Ver pista →</button>
+        <div class="pista">¿Y si el robot pudiera probar la comida y ajustar la sal él solo? ¿Eso sería diferente? ¿Por qué?</div>
+      </div>
+      <div class="caso-card">
+        <span class="caso-icon">📸</span>
+        <div class="caso-q">Un filtro de cámara que detecta tu cara y le pone orejas de perro, ¿es IA?</div>
+        <div class="votos"><button class="voto-btn" onclick="voto(this,'si')">✅ Sí</button><button class="voto-btn" onclick="voto(this,'no')">❌ No</button><button class="voto-btn" onclick="voto(this,'dep')">🤔 Depende</button></div>
+        <button class="btn btn-blue btn-sm" onclick="pista(this)">Ver pista →</button>
+        <div class="pista">Para detectar una cara, el sistema tuvo que aprender con miles de fotos. ¿Eso cambia vuestra respuesta?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CIERRE -->
+<div class="screen" id="s-cierre">
+  <div class="sec-head">
+    <button class="back-btn" onclick="goTo('s-home')">← Volver</button>
+    <div class="sec-ttl"><h2>🔒 Fase 5 — Cierre</h2><div class="breadcrumb">S1 · Fase 5 · 6 minutos</div></div>
+    <button class="home-icon-btn" onclick="goTo('s-home')">🏠</button>
+  </div>
+  <div class="sc">
+    <div class="tip-docente">No resumas lo que han aprendido. Hoy han pensado, no aprendido todavía. Cierra reconociendo eso.</div>
+    <div class="fase-card">
+      <div class="fase-title">📁 Entregad las fichas</div>
+      <div class="fase-desc"><strong>Entregad vuestras fichas ahora.</strong> Las guardamos tal y como están, con todo lo que habéis escrito. Más adelante, cuando el proyecto esté casi terminado, os las devolveremos para que veáis vosotros mismos cuánto ha cambiado lo que pensáis sobre la IA.</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">📸 El mapa es nuestro punto de partida</div>
+      <div class="fase-desc">Lo que está en la pizarra ahora mismo es lo que sabéis hoy. Es el punto de partida del grupo. Lo guardamos también para poder compararlo al final.</div>
+    </div>
+    <div class="fase-card">
+      <div class="fase-title">🌉 Antes de terminar, una pregunta</div>
+      <button class="btn btn-gold btn-sm" onclick="rv(this)">Mostrar pregunta →</button>
+      <div class="rv rv-gold" style="text-align:center;font-size:1.05rem;font-weight:700;padding:18px 16px;line-height:1.5">"¿Una máquina sigue siempre las mismas reglas,<br>o puede aprender reglas nuevas por sí sola?"<br><span style="font-size:.85rem;font-weight:400;font-style:italic;display:block;margin-top:10px">Esto es lo que veremos en la próxima sesión.</span></div>
+    </div>
+    <div class="checklist">
+      <div class="checklist-title">✅ Checklist de cierre</div>
+      <div class="checklist-item">☐ Fichas recogidas<br>☐ Mapa colectivo fotografiado<br>☐ Pregunta puente lanzada<br>☐ Tarjetas preparadas para la S2 — «El juego del cartero»</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function rv(btn){var box=btn.nextElementSibling;if(!box)return;box.style.display=box.style.display==='block'?'none':'block';}
+function voto(btn,tipo){var v=btn.closest('.votos').querySelectorAll('.voto-btn');v.forEach(function(b){b.classList.remove('sel-si','sel-no','sel-dep');});if(tipo==='si')btn.classList.add('sel-si');else if(tipo==='no')btn.classList.add('sel-no');else btn.classList.add('sel-dep');}
+function pista(btn){var p=btn.nextElementSibling;if(!p)return;if(p.style.display==='block'){p.style.display='none';btn.textContent='Ver pista →';}else{p.style.display='block';btn.textContent='Ocultar pista ▲';}}
+</script>
+</body>
+</html>
